@@ -3,8 +3,6 @@
 //get info from DOM
 //change store
 //render
-//Hi Kathy
-
 
 // `STORE` is responsible for storing the underlying data
 // that our app needs to keep track of in order to work.
@@ -15,12 +13,15 @@
 // indicates if it's checked off or not.
 // we're pre-adding items to the shopping list so there's
 // something to see when the page first loads.
-const STORE = [
-  { name: 'apples', checked: false },
-  { name: 'oranges', checked: false },
-  { name: 'milk', checked: true },
-  { name: 'bread', checked: false }
-];
+const STORE = {
+  items: [
+    { name: 'apples', checked: false },
+    { name: 'oranges', checked: false },
+    { name: 'milk', checked: true },
+    { name: 'bread', checked: false }
+  ],
+  displayStatus: true,
+};
 
 function generateItemElement(item, itemIndex, template) {
   return `
@@ -51,13 +52,17 @@ function renderShoppingList() {
   // this function will be responsible for rendering the shopping list in
   // the DOM
   console.log('`renderShoppingList` ran');
-  const shoppingListItemsString = generateShoppingItemsString(STORE);
+  let storeName = STORE.items;
+  if(STORE.displayStatus === false) {
+    storeName = storeName.filter(item =>  item.checked);  }
+
+  const shoppingListItemsString = generateShoppingItemsString(storeName );
   $('.js-shopping-list').html(shoppingListItemsString);
 
 }
 function addItemToShoppingList(itemName) {
   console.log(`Adding "${itemName}" to shopping list`);
-  STORE.push({ name: itemName, checked: false });
+  STORE.items.push({ name: itemName, checked: false });
 }
 
 function handleNewItemSubmit() {
@@ -72,12 +77,12 @@ function handleNewItemSubmit() {
     renderShoppingList();
   });
 }
-
+//+++++++++++++++++++++++++++++++
 function toggleCheckedForListItem(itemIndex) {
   console.log('Toggling checked property for item at index ' + itemIndex);
-  STORE[itemIndex].checked = !STORE[itemIndex].checked;
+  STORE.items[itemIndex].checked = !STORE.items[itemIndex].checked;
 }
-
+//+++++++++++++++++++++++++++++++
 
 function getItemIndexFromElement(item) {
   const itemIndexString = $(item)
@@ -86,7 +91,7 @@ function getItemIndexFromElement(item) {
   return parseInt(itemIndexString, 10);
 }
 
-
+//+++++++++++++++++++++++++++++++
 function handleItemCheckClicked() {
   // this function will be responsible for rendering the shopping list in
   // the DOM
@@ -97,13 +102,15 @@ function handleItemCheckClicked() {
     toggleCheckedForListItem(itemIndex);
     renderShoppingList();
   });
-
 }
+//+++++++++++++++++++++++++++++++
+
 // name says it all. responsible for deleting a list item.
 function deleteListItem(itemIndex) {
   console.log(`Deleting item at index  ${itemIndex} from shopping list`);
-  STORE.splice(itemIndex, 1);
+  STORE.items.splice(itemIndex, 1);
 }
+//+++++++++++++++++++++++++++++++
 
 
 function handleDeleteItemClicked() {
@@ -117,6 +124,32 @@ function handleDeleteItemClicked() {
     renderShoppingList();
   });
 }
+//check with STORE to see
+function changeShowHide(showHideValue) {
+  // STORE.items.checked = showHideValue;
+}
+//+++++++++++++++++++++++++++++++
+
+function useInputShowHide () {
+  //get info from DOM    //listen for select
+  $('#js-show-hide-pulldown').on('change',  e =>{
+
+    const showHideValue = $(e.target).val();
+    console.log(showHideValue );
+    //change store
+    if(showHideValue === 'true') {
+      STORE.displayStatus = true;
+    } else {
+      STORE.displayStatus = false;
+    }
+
+    renderShoppingList();
+  });
+}
+console.log('I\'m inside function useInputShowHide');
+
+//+++++++++++++++++++++++++++++++
+
 
 // this function will be responsible for rendering the shopping list in
 // the DOM
@@ -125,6 +158,7 @@ function handleShoppingList() {
   handleNewItemSubmit();
   handleItemCheckClicked();
   handleDeleteItemClicked();
+  useInputShowHide();
 }
 
 // when the page loads, call `handleShoppingList`

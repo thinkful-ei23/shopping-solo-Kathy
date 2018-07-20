@@ -49,3 +49,11 @@ button:hover {
 .shopping-item__checked {
   text-decoration: line-through;
 }
+
+.additions {
+padding: 20px 0;
+
+}
+.additions select{
+  margin-left: 20px;
+  }
