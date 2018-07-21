@@ -21,8 +21,10 @@ const STORE = {
     { name: 'bread', checked: false }
   ],
   displayStatus: true,
+  searchText: 'null',
 };
 
+//+++++++++++++++++++++++++++++++
 function generateItemElement(item, itemIndex, template) {
   return `
 	<li class="js-item-index-element" data-item-index="${itemIndex}">
@@ -38,16 +40,15 @@ function generateItemElement(item, itemIndex, template) {
     </li>`;
 }
 
+//+++++++++++++++++++++++++++++++
 function generateShoppingItemsString(shoppingList) {
   console.log('Generating shopping list element');
-
   const items = shoppingList.map((item, index) => generateItemElement(item, index));
-
   return items.join('');
 }
 
 
-
+//+++++++++++++++++++++++++++++++
 function renderShoppingList() {
   // this function will be responsible for rendering the shopping list in
   // the DOM
@@ -55,16 +56,20 @@ function renderShoppingList() {
   let storeName = STORE.items;
   if(STORE.displayStatus === false) {
     storeName = storeName.filter(item =>  item.checked);  }
+  if(STORE.searchTerm === 'string') {
+    storeName = storeName.filter(item =>  item.name);  }
 
   const shoppingListItemsString = generateShoppingItemsString(storeName );
   $('.js-shopping-list').html(shoppingListItemsString);
-
 }
+
+
+//+++++++++++++++++++++++++++++++
 function addItemToShoppingList(itemName) {
   console.log(`Adding "${itemName}" to shopping list`);
   STORE.items.push({ name: itemName, checked: false });
 }
-
+//+++++++++++++++++++++++++++++++
 function handleNewItemSubmit() {
   // this function will be responsible for rendering the shopping list in
   // the DOM
@@ -110,8 +115,6 @@ function deleteListItem(itemIndex) {
   console.log(`Deleting item at index  ${itemIndex} from shopping list`);
   STORE.items.splice(itemIndex, 1);
 }
-//+++++++++++++++++++++++++++++++
-
 
 function handleDeleteItemClicked() {
   // like in `handleItemCheckClicked`, we use event delegation
@@ -124,18 +127,15 @@ function handleDeleteItemClicked() {
     renderShoppingList();
   });
 }
-//check with STORE to see
-function changeShowHide(showHideValue) {
-  // STORE.items.checked = showHideValue;
-}
 //+++++++++++++++++++++++++++++++
 
 function useInputShowHide () {
+  console.log('I\'m inside function useInputShowHide');
   //get info from DOM    //listen for select
   $('#js-show-hide-pulldown').on('change',  e =>{
 
     const showHideValue = $(e.target).val();
-    console.log(showHideValue );
+    //console.log(showHideValue );
     //change store
     if(showHideValue === 'true') {
       STORE.displayStatus = true;
@@ -146,7 +146,33 @@ function useInputShowHide () {
     renderShoppingList();
   });
 }
-console.log('I\'m inside function useInputShowHide');
+
+//+++++++++++++++++++++++++++++++
+
+function getSearchButtonText() {
+  console.log('I\'m inside getSearchButtonText');
+  const searchTerm = $('#js-site-search').text().toLowerCase();
+}
+
+function handleSearchButton(searchTerm) {
+  console.log('I\'m inside handleSearchButton');
+  $('#js-search-button').on('submit',  event =>{
+    event.preventDefault;
+    let filteredItems = [...STORE.items.itemName];
+
+    $( filteredItems ).each( function( ){
+
+    });
+
+  });
+
+}
+
+
+
+
+
+
 
 //+++++++++++++++++++++++++++++++
 
@@ -159,6 +185,8 @@ function handleShoppingList() {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   useInputShowHide();
+  getSearchButtonText();
+  handleSearchButton();
 }
 
 // when the page loads, call `handleShoppingList`

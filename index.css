@@ -52,8 +52,20 @@ button:hover {
 
 .additions {
 padding: 20px 0;
-
 }
 .additions select{
   margin-left: 20px;
   }
+#js-search-button {
+  border-radius: 10px;
+
+}
+/*
+.search-control > input,
+.search-control > button {
+    background-color: #e4f0f5;
+    /* color: #29627e;
+    font-size: 1.2rem;
+
+}
+ */
